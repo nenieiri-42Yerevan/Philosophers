@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 14:47:20 by vismaily          #+#    #+#             */
-/*   Updated: 2021/12/31 15:18:57 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/01/02 18:20:06 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,18 @@ static int	errors(int n)
 {
 	if (n == 1)
 		printf("Arguments count must be 4 or 5\n");
-	if (n == 2)
+	else if (n == 2)
 		printf("Wrong number of philosophers\n");
-	if (n == 3)
+	else if (n == 3)
 		printf("Error: time to die\n");
-	if (n == 4)
+	else if (n == 4)
 		printf("Error: time to eat\n");
-	if (n == 5)
+	else if (n == 5)
 		printf("Error: time to sleep\n");
-	if (n == 6)
+	else if (n == 6)
 		printf("Wrong number of meals\n");
+	else if (n == 7)
+		printf("Error when initializing mutex\n");
 	return (1);
 }
 
@@ -73,5 +75,32 @@ int	init_args(int argc, char **argv, struct s_state *state)
 	}
 	else
 		state->nb_eat = -1;
+	state->finish = 0;
+	state->all_ate = 0;
+	return (0);
+}
+
+int	init_philo(struct s_state *state)
+{
+	int	i;
+
+	state->philo = malloc(state->nb * sizeof(t_philo));
+	state->fork = malloc(state->nb * sizeof(pthread_mutex_t));
+	if (!(state->philo) || !(state->fork))
+		exit(EXIT_FAILURE);
+	if (pthread_mutex_init(&(state->writing), NULL))
+		return (errors(7));
+	i = -1;
+	while (++i < state->nb)
+	{
+		state->philo[i].id = i;
+		state->philo[i].ate_count = 0;
+		state->philo[i].last_meal = 0;
+		state->philo[i].fork_l = i;
+		state->philo[i].fork_r = (i + 1) % state->nb;
+		state->philo[i].state = state;
+		if (pthread_mutex_init(&(state->fork[i]), NULL))
+			return (errors(7));
+	}
 	return (0);
 }

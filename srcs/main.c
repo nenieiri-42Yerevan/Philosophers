@@ -6,34 +6,69 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/30 21:09:08 by vismaily          #+#    #+#             */
-/*   Updated: 2021/12/31 17:11:21 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/01/02 18:07:04 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int init_philo(struct s_state *state)
+static void	philo_eats(t_philo *philo)
 {
-	int	i;
-
-	state->philo = malloc(state->nb * sizeof(t_philo));
-	if (!(state->philo))
-		exit(EXIT_FAILURE);
-	i = -1;
-	while (++i < state->nb)
-	{
-		state->philo[i].id = i;
-		state->philo[i].fork_l = i;
-		state->philo[i].fork_r = (i + 1) % state->nb;
-	}
+	pthread_mutex_lock(&(philo->state->fork[philo->fork_l]));
+	action_print(philo, "has taken a fork");
+	pthread_mutex_lock(&(philo->state->fork[philo->fork_r]));
+	action_print(philo, "has taken a fork");
+	action_print(philo, "is eating");
+	philo->last_meal = timestamp();
+	smart_sleep(philo->state->t_eat, philo->state);
+	(philo->ate_count)++;
 }
 
 void	*routine(void *args)
 {
-	struct s_state	*state;
+	t_philo	*philo;
 
-	state = (struct s_state *)args;
-	printf("%d\n", state->tmp_nb);
+	philo = (t_philo *)args;
+	if (philo->id % 2 != 0)
+		usleep(15000);
+	while (philo->state->finish != 1)
+	{
+		philo_eats(philo);
+		action_print(philo, "is sleeping");
+		pthread_mutex_unlock(&(philo->state->fork[philo->fork_l]));
+		pthread_mutex_unlock(&(philo->state->fork[philo->fork_r]));
+		if (philo->state->all_ate == 1)
+			break ;
+		smart_sleep(philo->state->t_sleep, philo->state);
+		action_print(philo, "is thinking");
+	}
+	return (NULL);
+}
+
+void	death_checker(struct s_state *state)
+{
+	int	i;
+
+	while (!(state->all_ate))
+	{
+		i = -1;
+		while (++i < state->nb && !(state->finish))
+		{
+			if ((timestamp() - state->philo[i].last_meal) > state->t_die)
+			{
+				action_print(&(state->philo[i]), "died");
+				state->finish = 1;
+			}
+		}
+		if (state->finish)
+			break ;
+		i = 0;
+		while (state->nb_eat != -1 && i < state->nb \
+				&& state->philo[i].ate_count >= state->nb_eat)
+			i++;
+		if (i == state->nb)
+			state->all_ate = 1;
+	}
 }
 
 int	init_thread(struct s_state *state)
@@ -41,17 +76,23 @@ int	init_thread(struct s_state *state)
 	int	i;
 
 	i = 0;
+	state->starting_time = timestamp();
 	while (i < state->nb)
 	{
-		state->tmp_nb = i;
 		if (pthread_create(&(state->philo[i].thread), NULL, \
-					routine, (void *)state))
+					routine, (void *)&(state->philo[i])))
 			return (1);
+		state->philo[i].last_meal = timestamp();
 		i++;
 	}
+	death_checker(state);
 	i = 0;
 	while (i < state->nb)
 		pthread_join(state->philo[i++].thread, NULL);
+	i = -1;
+	while (++i < state->nb)
+		pthread_mutex_destroy(&(state->fork[i]));
+	pthread_mutex_destroy(&(state->writing));
 	return (0);
 }
 
@@ -61,7 +102,8 @@ int	main(int argc, char **argv)
 
 	if (init_args(argc, argv, &state) == 0)
 	{
-		init_philo(&state);
+		if (init_philo(&state) == 1)
+			return (0);
 		init_thread(&state);
 	}
 	return (0);

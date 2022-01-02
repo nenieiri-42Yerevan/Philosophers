@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:42:41 by vismaily          #+#    #+#             */
-/*   Updated: 2021/12/31 16:37:22 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/01/02 16:47:56 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,38 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 typedef struct s_philo
 {
-	int			id;
-	int			fork_l;
-	int			fork_r;
-	pthread_t	thread;
+	int				id;
+	int				ate_count;
+	int				fork_l;
+	int				fork_r;
+	long long		last_meal;
+	pthread_t		thread;
+	struct s_state	*state;
 }				t_philo;
 
 struct s_state
 {
-	int		nb;
-	int		t_die;
-	int		t_eat;
-	int		t_sleep;
-	int		nb_eat;
-	int		tmp_nb;
-	t_philo	*philo;
+	int				nb;
+	int				t_die;
+	int				t_eat;
+	int				t_sleep;
+	int				nb_eat;
+	int				finish;
+	int				all_ate;
+	long long		starting_time;
+	t_philo			*philo;
+	pthread_mutex_t	writing;
+	pthread_mutex_t	*fork;
 };
 
-int	init_args(int argc, char **argv, struct s_state *state);
+int			init_args(int argc, char **argv, struct s_state *state);
+int			init_philo(struct s_state *state);
+long long	timestamp(void);
+void		action_print(t_philo *philo, char *str);
+void		smart_sleep(long long time, struct s_state *state);
 
 #endif
