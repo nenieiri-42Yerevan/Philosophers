@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   action_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/30 21:09:08 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/08 15:57:46 by vismaily         ###   ########.fr       */
+/*   Created: 2022/05/08 15:54:09 by vismaily          #+#    #+#             */
+/*   Updated: 2022/05/08 15:54:37 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+void	action_print(t_philo *philo, char *str)
 {
-	struct s_state	state;
-
-	if (init_args(argc, argv, &state) == 0)
+	pthread_mutex_lock(&(philo->state->writing));
+	if (!(philo->state->finish))
 	{
-		if (init_philo(&state) == 1)
-			return (0);
-		threads(&state);
+		printf("%lld ", timestamp() - philo->state->starting_time);
+		printf("%d ", philo->id + 1);
+		printf("%s\n", str);
 	}
-	return (0);
+	pthread_mutex_unlock(&(philo->state->writing));
 }

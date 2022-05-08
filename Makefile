@@ -4,9 +4,9 @@ SRCS		= $(wildcard ./srcs/*.c)
 
 OBJS		= $(patsubst %.c, %.o, $(SRCS))
 
-CC			= gcc
+CC			= cc
 
-CFLAGS		=-Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror
 
 RM			= rm -rf
 

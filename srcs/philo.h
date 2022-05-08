@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:42:41 by vismaily          #+#    #+#             */
-/*   Updated: 2022/01/02 16:47:56 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:56:22 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ typedef struct s_philo
 struct s_state
 {
 	int				nb;
-	int				t_die;
-	int				t_eat;
-	int				t_sleep;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
 	int				nb_eat;
 	int				finish;
 	int				all_ate;
@@ -47,6 +47,8 @@ struct s_state
 
 int			init_args(int argc, char **argv, struct s_state *state);
 int			init_philo(struct s_state *state);
+int			errors(int n);
+int			threads(struct s_state *state);
 long long	timestamp(void);
 void		action_print(t_philo *philo, char *str);
 void		smart_sleep(long long time, struct s_state *state);

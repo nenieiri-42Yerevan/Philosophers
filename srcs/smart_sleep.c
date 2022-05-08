@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/30 21:09:08 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/08 15:57:46 by vismaily         ###   ########.fr       */
+/*   Created: 2022/01/02 16:32:03 by vismaily          #+#    #+#             */
+/*   Updated: 2022/05/08 15:54:46 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+void	smart_sleep(long long time, struct s_state *state)
 {
-	struct s_state	state;
+	long long	i;
 
-	if (init_args(argc, argv, &state) == 0)
+	i = timestamp();
+	while (!(state->finish))
 	{
-		if (init_philo(&state) == 1)
-			return (0);
-		threads(&state);
+		if ((timestamp() - i) >= time)
+			break ;
 	}
-	return (0);
 }
