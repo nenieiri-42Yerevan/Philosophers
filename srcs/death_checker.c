@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:15:42 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/09 15:27:47 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/09 17:15:01 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	all_ate(int	*eat_finish, t_philo **philo, int i)
 {
 	if (philo[0]->state->nb_eat != -1 && \
 			philo[i]->ate_count >= philo[0]->state->nb_eat)
-		++eat_finish;
+		++(*eat_finish);
 }
 
 void	*death_checker(void *args)
@@ -35,6 +35,7 @@ void	*death_checker(void *args)
 			if ((timestamp() - philo[i]->last_meal) > \
 					philo[0]->state->time_to_die)
 			{
+				philo[i]->is_dead = 1;
 				action_print(philo[i], "died");
 				eat_finish = -1;
 				break ;

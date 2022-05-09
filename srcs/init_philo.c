@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 13:57:56 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/09 15:33:50 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/09 17:13:59 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static int	philo_fill(t_philo **philo, int i, struct s_state *state, \
 	philo[i]->id = i;
 	philo[i]->ate_count = 0;
 	philo[i]->last_meal = 0;
+	philo[i]->is_dead = 0;
+	philo[i]->philo_born_time = timestamp();
 	philo[i]->fork_l = i;
 	philo[i]->fork_r = (i + 1) % state->nb;
 	philo[i]->writing = writing;

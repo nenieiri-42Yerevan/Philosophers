@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:42:41 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/09 15:22:58 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/09 17:14:18 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ typedef struct s_philo
 	int				fork_l;
 	int				fork_r;
 	long long		last_meal;
+	long long		philo_born_time;
+	int				is_dead;
 	pthread_mutex_t	*writing;
 	struct s_state	*state;
 }				t_philo;
@@ -38,7 +40,6 @@ struct s_state
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nb_eat;
-	long long		starting_time;
 	pthread_mutex_t	*fork;
 };
 

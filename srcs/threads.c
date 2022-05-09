@@ -6,22 +6,25 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 15:57:12 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/09 15:42:53 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/09 17:18:14 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	philo_eats(t_philo *philo)
+static int	philo_eats(t_philo *philo)
 {
 	pthread_mutex_lock(&(philo->state->fork[philo->fork_l]));
 	action_print(philo, "has taken a left fork");
 	pthread_mutex_lock(&(philo->state->fork[philo->fork_r]));
+	if (philo->is_dead == 1)
+		return (1);
 	action_print(philo, "has taken a right fork");
 	action_print(philo, "is eating");
 	philo->last_meal = timestamp();
 	smart_sleep(philo->state->time_to_eat, philo->state);
 	(philo->ate_count)++;
+	return (0);
 }
 
 static void	*routine(void *args)
@@ -33,7 +36,8 @@ static void	*routine(void *args)
 		usleep(15000);
 	while (1)
 	{
-		philo_eats(philo);
+		if (philo_eats(philo) == 1)
+			break ;
 		action_print(philo, "is sleeping");
 		pthread_mutex_unlock(&(philo->state->fork[philo->fork_l]));
 		pthread_mutex_unlock(&(philo->state->fork[philo->fork_r]));
@@ -50,9 +54,9 @@ int	threads(struct s_state *state, t_philo **philo)
 
 	i = -1;
 	pthread_create(&dead, NULL, death_checker, (void *)philo);
-	state->starting_time = timestamp();
 	while (philo[++i] != 0)
 	{
+		philo[i]->philo_born_time = timestamp();
 		philo[i]->last_meal = timestamp();
 		if (pthread_create(&(philo[i]->thread), 0, routine, (void *)(philo[i])))
 			return (1);
