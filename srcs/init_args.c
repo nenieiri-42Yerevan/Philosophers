@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 14:47:20 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/08 13:58:23 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/08 17:09:39 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ int	init_args(int argc, char **argv, struct s_state *state)
 	state->nb = ft_atoi(argv[1]);
 	if (state->nb < 1)
 		return (errors(2));
-	state->time_die = ft_atoi(argv[2]);
-	if (state->time_die <= 0)
+	state->time_to_die = ft_atoi(argv[2]);
+	if (state->time_to_die <= 0)
 		return (errors(3));
-	state->time_eat = ft_atoi(argv[3]);
-	if (state->time_eat <= 0)
+	state->time_to_eat = ft_atoi(argv[3]);
+	if (state->time_to_eat <= 0)
 		return (errors(4));
-	state->time_sleep = ft_atoi(argv[4]);
-	if (state->time_sleep <= 0)
+	state->time_to_sleep = ft_atoi(argv[4]);
+	if (state->time_to_sleep <= 0)
 		return (errors(5));
 	if (argc == 6)
 	{
@@ -56,7 +56,5 @@ int	init_args(int argc, char **argv, struct s_state *state)
 	}
 	else
 		state->nb_eat = -1;
-	state->finish = 0;
-	state->all_ate = 0;
 	return (0);
 }

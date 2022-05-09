@@ -6,33 +6,54 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 13:57:56 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/08 13:58:23 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/09 15:33:50 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.c"
+#include "philo.h"
 
-int	init_philo(struct s_state *state)
+static int	philo_fill(t_philo **philo, int i, struct s_state *state, \
+		pthread_mutex_t *writing)
 {
-	int	i;
+	philo[i] = (t_philo *)malloc(sizeof(t_philo));
+	if (philo[i] == 0)
+		return (0);
+	philo[i]->id = i;
+	philo[i]->ate_count = 0;
+	philo[i]->last_meal = 0;
+	philo[i]->fork_l = i;
+	philo[i]->fork_r = (i + 1) % state->nb;
+	philo[i]->writing = writing;
+	philo[i]->state = state;
+	if (pthread_mutex_init(&(state->fork[i]), NULL))
+	{
+		errors(7);
+		return (0);
+	}
+	return (1);
+}
 
-	state->philo = malloc(sizeof(t_philo) * state->nb);
+t_philo	**init_philo(struct s_state *state)
+{
+	int				i;
+	t_philo			**philo;
+	pthread_mutex_t	writing;
+
+	philo = (t_philo **)malloc(sizeof(t_philo) * (state->nb + 1));
 	state->fork = malloc(sizeof(pthread_mutex_t) * state->nb);
-	if (!(state->philo) || !(state->fork))
-		exit(EXIT_FAILURE);
-	if (pthread_mutex_init(&(state->writing), NULL))
-		return (errors(7));
+	if (!philo || !(state->fork))
+		exit(0);
+	philo[state->nb] = 0;
+	if (pthread_mutex_init(&writing, NULL) != 0)
+	{
+		errors(7);
+		return (0);
+	}
 	i = -1;
 	while (++i < state->nb)
 	{
-		state->philo[i].id = i;
-		state->philo[i].ate_count = 0;
-		state->philo[i].last_meal = 0;
-		state->philo[i].fork_l = i;
-		state->philo[i].fork_r = (i + 1) % state->nb;
-		state->philo[i].state = state;
-		if (pthread_mutex_init(&(state->fork[i]), NULL))
-			return (errors(7));
+		if (philo_fill(philo, i, state, &writing) == 0)
+			return (0);
 	}
-	return (0);
+	return (philo);
 }

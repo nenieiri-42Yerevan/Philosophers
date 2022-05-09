@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:42:41 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/08 15:56:22 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/09 15:22:58 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,34 +21,32 @@
 
 typedef struct s_philo
 {
+	pthread_t		thread;
 	int				id;
 	int				ate_count;
 	int				fork_l;
 	int				fork_r;
 	long long		last_meal;
-	pthread_t		thread;
+	pthread_mutex_t	*writing;
 	struct s_state	*state;
 }				t_philo;
 
 struct s_state
 {
 	int				nb;
-	int				time_die;
-	int				time_eat;
-	int				time_sleep;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
 	int				nb_eat;
-	int				finish;
-	int				all_ate;
 	long long		starting_time;
-	t_philo			*philo;
-	pthread_mutex_t	writing;
 	pthread_mutex_t	*fork;
 };
 
 int			init_args(int argc, char **argv, struct s_state *state);
-int			init_philo(struct s_state *state);
+t_philo		**init_philo(struct s_state *state);
 int			errors(int n);
-int			threads(struct s_state *state);
+int			threads(struct s_state *state, t_philo **philo);
+void		*death_checker(void *args);
 long long	timestamp(void);
 void		action_print(t_philo *philo, char *str);
 void		smart_sleep(long long time, struct s_state *state);
