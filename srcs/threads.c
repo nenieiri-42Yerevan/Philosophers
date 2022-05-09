@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 15:57:12 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/09 17:18:14 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/09 19:32:52 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	*routine(void *args)
 
 	philo = (t_philo *)args;
 	if (philo->id % 2 != 0)
-		usleep(15000);
+		usleep(20000);
 	while (1)
 	{
 		if (philo_eats(philo) == 1)

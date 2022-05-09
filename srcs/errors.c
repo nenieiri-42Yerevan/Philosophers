@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 13:56:12 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/08 18:20:54 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/09 18:42:40 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ int	errors(int n)
 		printf("Wrong number of meals\n");
 	else if (n == 7)
 		printf("Error when initializing mutex\n");
-	return (0);
+	return (1);
 }
