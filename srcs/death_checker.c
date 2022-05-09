@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:15:42 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/09 17:15:01 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/09 19:39:07 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	*death_checker(void *args)
 		while (++i < philo[0]->state->nb)
 		{
 			if ((timestamp() - philo[i]->last_meal) > \
-					philo[0]->state->time_to_die)
+				philo[0]->state->time_to_die && philo[i]->philo_born_time != 0)
 			{
 				philo[i]->is_dead = 1;
 				action_print(philo[i], "died");
