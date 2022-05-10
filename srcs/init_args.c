@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 14:47:20 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/09 19:31:30 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/10 15:34:05 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ static int	cmp_chars(char a, char b)
 {
 	if ((a - b) < 0)
 		return (-1);
-	return (0);
+	else if ((a - b) == 0)
+		return (0);
+	return (1);
 }
 
 static int	cmp(int i, const char *str, int len)
@@ -45,7 +47,7 @@ static int	cmp(int i, const char *str, int len)
 		return (cmp_chars('4', str[i + len]));
 	if (i == 9)
 		return (cmp_chars('7', str[i + len]));
-	return (0);
+	return (2);
 }
 
 static int	check_num(const char *str)
@@ -68,7 +70,7 @@ static int	check_num(const char *str)
 		while (++i < 10)
 		{
 			res = cmp(i, str, len);
-			if (res == -1)
+			if (res == -1 || res == 0)
 				break ;
 		}
 	}
