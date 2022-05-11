@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:15:42 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/09 20:38:44 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/11 16:07:24 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	dead(t_philo *philo, int *eat_finish)
 {
 	philo->is_dead = 1;
-	action_print(philo, "died");
+	action_print(philo, "died", "\033[31;1m");
 	*eat_finish = -1;
 }
 

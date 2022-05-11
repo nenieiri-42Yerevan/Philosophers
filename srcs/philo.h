@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 12:42:41 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/09 17:14:18 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/11 15:44:51 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			errors(int n);
 int			threads(struct s_state *state, t_philo **philo);
 void		*death_checker(void *args);
 long long	timestamp(void);
-void		action_print(t_philo *philo, char *str);
+void		action_print(t_philo *philo, char *str, char *color);
 void		smart_sleep(long long time, struct s_state *state);
 
 #endif

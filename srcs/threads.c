@@ -6,7 +6,7 @@
 /*   By: vismaily <nenie_iri@mail.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 15:57:12 by vismaily          #+#    #+#             */
-/*   Updated: 2022/05/09 19:32:52 by vismaily         ###   ########.fr       */
+/*   Updated: 2022/05/11 16:11:13 by vismaily         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 static int	philo_eats(t_philo *philo)
 {
 	pthread_mutex_lock(&(philo->state->fork[philo->fork_l]));
-	action_print(philo, "has taken a left fork");
+	action_print(philo, "has taken a left fork", "\033[33;1m");
 	pthread_mutex_lock(&(philo->state->fork[philo->fork_r]));
 	if (philo->is_dead == 1)
 		return (1);
-	action_print(philo, "has taken a right fork");
-	action_print(philo, "is eating");
+	action_print(philo, "has taken a right fork", "\033[33;1m");
+	action_print(philo, "is eating", "\033[35;1m");
 	philo->last_meal = timestamp();
 	smart_sleep(philo->state->time_to_eat, philo->state);
 	(philo->ate_count)++;
@@ -38,11 +38,11 @@ static void	*routine(void *args)
 	{
 		if (philo_eats(philo) == 1)
 			break ;
-		action_print(philo, "is sleeping");
+		action_print(philo, "is sleeping", "\033[34;1m");
 		pthread_mutex_unlock(&(philo->state->fork[philo->fork_l]));
 		pthread_mutex_unlock(&(philo->state->fork[philo->fork_r]));
 		smart_sleep(philo->state->time_to_sleep, philo->state);
-		action_print(philo, "is thinking");
+		action_print(philo, "is thinking", "\033[32;1m");
 	}
 	return (NULL);
 }
