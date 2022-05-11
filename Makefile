@@ -8,17 +8,19 @@ CC			= cc
 
 CFLAGS		= -Wall -Wextra -Werror
 
+INCLUDES	= -I ./includes
+
 RM			= rm -rf
 
 .PHONY:		all clean fclean re
 
-%.o:		%.c ./srcs/philo.h
-			@$(CC) $(CFLAGS) -pthread -o $@ -c $<
+%.o:		%.c ./includes/philo.h
+			@$(CC) $(CFLAGS) $(INCLUDES) -pthread -o $@ -c $<
 
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-			@$(CC) $(CFLAGS) -pthread -o $(NAME) $(OBJS)
+			@$(CC) $(CFLAGS) $(INCLUDES) -pthread -o $(NAME) $(OBJS)
 
 clean:
 			@$(RM) $(OBJS)
