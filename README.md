@@ -44,4 +44,4 @@ ___
 **Philos** does their works using **threads** as philosophers, and **mutexes** as forks.
 For more information you can read the en.subject.pdf. My code does not have memory leaks and it passes all the tests.
 
-[!Philosophers and 42Yerevan](./picture.png)
+![Philosophers and 42Yerevan](./picture.png)
